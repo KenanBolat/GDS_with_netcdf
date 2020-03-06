@@ -1,0 +1,1 @@
+# h35 open_grıb2 den bir türlü açılmıyor!
