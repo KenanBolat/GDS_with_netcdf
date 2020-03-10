@@ -13,7 +13,7 @@ import os
 import sys 
 import mode_selector as mode_selector
 
-def resample_it(lat, lon, data, file_str, channel,  output_path = "/home/off/HSAF_SRC/offline/H35/input"):
+def resample_it(lat, lon, data, file_str, channel,  output_path = "/external/b/HSAF/OFFLINE/H35/input"):
 
     date_ = datetime.datetime.strptime(file_str.split("_")[4],"%Y%m%d%H%M%S")
     date_str =date_.strftime("%Y%m%d")
@@ -76,9 +76,9 @@ def resampleAll(file):
 
 if __name__ == "__main__":
     # process_path = r"/home/off/HSAF_SRC/offline/H35/input"
-    process_path = r"/home/off/HSAF_SRC/offline/netcdf/archive.eumetsat.int/umarf/onlinedownload/Hidrosaf/TEMP"
+    process_path = r"/external/b/HSAF/OFFLINE/H35/raw"
     # input_path = "/external/b/HSAF/OFFLINE/H35/input/"
-    input_path = "/home/off/HSAF_SRC/offline/H35/input/"
+    input_path = r"/external/b/HSAF/OFFLINE/H35/input"
     incr = 4
     for compressed in mode_selector.working_date:
         files = glob.glob1(process_path, "*_C_EUMP_{}*.nc".format(compressed))
