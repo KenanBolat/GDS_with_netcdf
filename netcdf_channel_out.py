@@ -10,6 +10,9 @@ import numpy as np
 import multiprocessing as mp
 s = datetime.datetime.now()
 import os
+import sys 
+import mode_selector as mode_selector
+
 def resample_it(lat, lon, data, file_str, channel,  output_path = "/home/off/HSAF_SRC/offline/H35/input"):
 
     date_ = datetime.datetime.strptime(file_str.split("_")[4],"%Y%m%d%H%M%S")
@@ -76,16 +79,16 @@ if __name__ == "__main__":
     process_path = r"/home/off/HSAF_SRC/offline/netcdf/archive.eumetsat.int/umarf/onlinedownload/Hidrosaf/TEMP"
     # input_path = "/external/b/HSAF/OFFLINE/H35/input/"
     input_path = "/home/off/HSAF_SRC/offline/H35/input/"
-    compressed = '20190304'
-    files = glob.glob1(process_path, "*_C_EUMP_{}*.nc".format(compressed))
     incr = 4
-    for f in range(0, len(files), incr):
-        files_in = files[f:f+incr]
-        N = mp.cpu_count()
-        with mp.Pool(processes=N) as p:
-             results = p.map(resampleAll, [file for file in files_in])
-    os.chdir(input_path)
-    cmd = "tar -czvf "+"{}_avhrr_h35_extent.tar.gz".format(input_path)+" eps_M01_"+compressed+"_*.hdf";
-    print(cmd)
-    os.system(cmd);
+    for compressed in mode_selector.working_date:
+        files = glob.glob1(process_path, "*_C_EUMP_{}*.nc".format(compressed))
+        for f in range(0, len(files), incr):
+            files_in = files[f:f+incr]
+            N = mp.cpu_count()
+            with mp.Pool(processes=N) as p:
+                results = p.map(resampleAll, [file for file in files_in])
+        os.chdir(input_path)
+        cmd = "tar -czvf "+"{}_avhrr_h35_extent.tar.gz".format(compressed)+" eps_M01_"+compressed+"_*.hdf --remove-files";
+        print(cmd)
+        os.system(cmd);
 
